@@ -9,11 +9,11 @@
 #+-$BEGIN----------------------+
 
 tor="$(which "$1")";
-log="$(basename "$0").log"
+log="$(basename "$0").log";
 
 if [ "$tor" = "" ];
 then
-	echo "Usage: $0 /path/to/command [args]"
+	echo "Usage: $0 /path/to/command [args]";
 	exit 1;
 fi;
 
