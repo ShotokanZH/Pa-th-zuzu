@@ -9,13 +9,15 @@
 #+-$BEGIN----------------------+
 
 tor="$(which "$1")";
-log="$(basename "$0").log";
+log="$(basename "$0").log"
 
 if [ "$tor" = "" ];
 then
-	echo "Usage: $0 /path/to/command [args]";
+	echo "Usage: $0 /path/to/command [args]"
 	exit 1;
 fi;
+
+trap '' 2;
 
 rm -rf "$log" 2>/dev/null;
 
@@ -68,6 +70,8 @@ rm -rf "$tmpd";
 rm -rf "$tmpf";
 echo "";
 echo "";
+
+trap 2;
 
 if [ -f "$log" ];
 then
