@@ -45,7 +45,7 @@ log="$(basename "$0").log"
 
 if [ "$tor" = "" ];
 then
-	echo "Usage: $0 [-r address:port|-e command] /path/to/command [args]";
+	echo "Usage: $0 [-r address:port] [-e command] [-t seconds] /path/to/command [args]";
 	echo -e "\t-r address:port\tStarts reverse shell to address:port";
 	echo -e "\t-e command\tRuns command if target is vulnerable";
 	echo -e "\t-t seconds\tKills target (SIGTERM) after \$seconds seconds";
