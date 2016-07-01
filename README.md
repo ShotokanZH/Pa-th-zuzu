@@ -12,5 +12,5 @@ Returns 0 if the executable is vulnerable, 1 otherwise.
 
 Logs are saved in `pathzuzu.sh.log` ( `$(basename "$0").log` )
 
-Demostration (warning: on some [tiny] devices the right part of the screen it's not viewable even while in landscape):
-[![Pa(th)zuzu](https://asciinema.org/a/7750ghw7z5jxh83fbeh3r71ek.png)](https://asciinema.org/a/7750ghw7z5jxh83fbeh3r71ek?autoplay=true)
+Demostration (warning: on some [very tiny] devices the right part of the screen it's not viewable even while in landscape):
+[![Pa(th)zuzu](https://asciinema.org/a/7750ghw7z5jxh83fbeh3r71ek.png)](https://asciinema.org/a/7750ghw7z5jxh83fbeh3r71ek?autoplay=true&size=10px)
