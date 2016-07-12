@@ -2,7 +2,9 @@
 Checks for PATH substitution vulnerabilities, logs the commands executed by the vulnerable executables and injects a reverse shell with the permissions of the owner of the process.
 
 #How to make it work
+- `curl https://raw.githubusercontent.com/ShotokanZH/Pa-th-zuzu/master/pathzuzu.sh > pathzuzu.sh`
 - `chmod +x pathzuzu.sh`
+- `./pathzuzu.sh`
 ```
  __      /___    \ ___    ___
 |__) /\ (  | |__| ) _//  \ _//  \|
