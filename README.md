@@ -1,4 +1,4 @@
-# Pa(th)zuzu! (v1.6.1)
+# Pa(th)zuzu! (v1.6.2)
 Checks for PATH substitution vulnerabilities, logs the commands executed by the vulnerable executables and injects a reverse shell with the permissions of the owner of the process.
 
 #How to make it work
@@ -8,9 +8,9 @@ Checks for PATH substitution vulnerabilities, logs the commands executed by the 
 ```
  __      /___    \ ___    ___
 |__) /\ (  | |__| ) _//  \ _//  \|
-|   /--\ \ | |  |/ /__\__//__\__/. v1.6.1
+|   /--\ \ | |  |/ /__\__//__\__/. v1.6.2
 
-Usage: /usr/local/bin/pathzuzu [-e command] [-r address:port] [-t seconds] /path/to/command [args]
+Usage: pathzuzu [-e command] [-r address:port] [-t seconds] command [args]
         -e command      Execute command if target is vulnerable
         -r address:port Starts reverse shell to address:port
         -t seconds      Timeout. Kills target after $seconds seconds
