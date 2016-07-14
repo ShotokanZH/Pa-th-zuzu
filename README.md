@@ -29,4 +29,4 @@ Logs are saved in `pathzuzu.sh.log` ( `$(basename "$0").log` )
 
 Demostration (warning: in asciinema on some [very tiny] devices the right part of the screen it's not viewable even while in landscape):
 
-[![Pa(th)zuzu](http://i.imgur.com/dtXuSQX.gif)](https://asciinema.org/a/9u6g8nd2mb6p31v2g7co9ee1l?autoplay=true)
+[![Pa(th)zuzu](https://shotokanzh.keybase.pub/pathzuzu.gif)](https://asciinema.org/a/3bb9qusnanh2g2kvel4k775v1?autoplay=true)
