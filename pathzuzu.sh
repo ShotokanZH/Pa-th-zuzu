@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.1----+------+
+#+-v1.6.2----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
@@ -9,16 +9,16 @@
 #+-$BEGIN----------------------+
 
 #color definition
-def=$(echo -en "\e[1;32m");	#used for definitions, bold green
-und=$(echo -en "\e[1;4;31m");	#used for important things, bold, underlined, red
-res=$(echo -en "\e[0m");	#reset
+export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
+export und=$(echo -en "\e[1;4;31m");	#used for important things, bold, underlined, red
+export res=$(echo -en "\e[0m");	#reset
 
 echo -en "${res}${def}";
 cat << EOF
 
  __      /___    \ ___    ___
 |__) /\ (  | |__| ) _//  \ _//  \|
-|   /--\ \ | |  |/ /__\__//__\__/. v1.6.1
+|   /--\ \ | |  |/ /__\__//__\__/. v1.6.2
 
 EOF
 echo -en "${res}";
@@ -84,7 +84,7 @@ log="$(basename "$0").log"
 
 if [ "$tor" = "" ];
 then
-	echo "Usage: $0 [-e command] [-r address:port] [-t seconds] /path/to/command [args]";
+	echo "Usage: $(basename "$0") [-e command] [-r address:port] [-t seconds] command [args]";
 	echo -e "\t-e command\t\e${und}E${res}xecute command if target is vulnerable";
 	echo -e "\t-r address:port\tStarts ${und}r${res}everse shell to address:port";
 	echo -e "\t-t seconds\t${und}T${res}imeout. Kills target after \$seconds seconds";
@@ -180,16 +180,38 @@ rm -rf "/dev/shm/pathzuzu_exe_lock" 2>/dev/null;
 echo "Running: ${def}$tor $@${res}";
 echo "";
 
+function printline(){
+	local maxl=$(tput cols);
+	maxl=$(( maxl - 8 ));
+	local med=$(( maxl / 2 ));
+	local x=0;
+
+	echo -n "${def}";
+	while [ $x -lt $maxl ];
+	do
+		if [ $x -eq $med ];
+		then
+			echo -n "PATHZUZU";
+		fi;
+		echo -n "=";
+		x=$(( x + 1 ));
+	done;
+	echo "${res}";
+}
+
+printline;
+
 if [ "$timeout" ==  "" ];
 then
 	PATH="$tmpd" "$tor" $@;
 else
 	function timeout(){	#yeah it's a trick. but it works. kind of.
 		maxt=$1;
-		shift;
-		bash -c "PID=\$\$;((trap '' PIPE;sleep $timeout; kill -s PIPE \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null; sleep 5; kill -s KILL \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null )& ) | (PATH='$tmpd' $@ )";
+		command="$2";
+		arg="$3";
+		bash -c "PID=\$\$;((trap '' PIPE;sleep $maxt; kill -s PIPE \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null; sleep 5; kill -s KILL \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null )& ) | (PATH='$tmpd' '$command' $arg )";
 	}
-	timeout $timeout "$tor $@";
+	timeout $timeout "$tor" "$@";
 fi;
 
 rm -rf "$tmpd";
@@ -197,7 +219,8 @@ rm -rf "$tmpf";
 rm -rf "/dev/shm/pathzuzu_rev_lock" 2>/dev/null;
 rm -rf "/dev/shm/pathzuzu_exe_lock" 2>/dev/null;
 
-echo "${res}";
+echo "";
+printline;
 echo "";
 
 trap 2;
