@@ -268,9 +268,9 @@ then
 	PATH="$tmpd" "$tor" $@;
 else
 	function timeout(){	#yeah it's a trick. but it works. kind of.
-		maxt=$1;
-		command="$2";
-		arg="$3";
+		local maxt=$1;
+		local command="$2";
+		local arg="$3";
 		bash -c "PID=\$\$;((trap '' PIPE;sleep $maxt; kill -s PIPE \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null; sleep 5; kill -s KILL \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null )& ) | (PATH='$tmpd' '$command' $arg )";
 	}
 	timeout $timeout "$tor" "$@";
