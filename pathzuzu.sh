@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.2----+------+
+#+-v1.6.3----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
 #|https://keybase.io/ShotokanZH|
 #+-$BEGIN----------------------+
+
+export l_version="1.6.3";
 
 #color definition
 export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
@@ -18,7 +20,7 @@ cat << EOF
 
  __      /___    \ ___    ___
 |__) /\ (  | |__| ) _//  \ _//  \|
-|   /--\ \ | |  |/ /__\__//__\__/. v1.6.2
+|   /--\ \ | |  |/ /__\__//__\__/. v${l_version}
 
 EOF
 echo -en "${res}";
@@ -30,11 +32,70 @@ t_gid="";
 t_uid="";
 timeout="";
 
+function check_update(){
+	local urlbase="https://raw.githubusercontent.com/ShotokanZH/Pa-th-zuzu/master/";
+	echo -n "Checking.."
+	local r_version=$(curl -s "${urlbase}version.txt" | grep -oP '^\d+(\.\d+)+$');
+	if [ "$r_version" != "" ];
+	then
+		if [ "$l_version" != "$r_version" ];
+		then
+			echo -e "\r\033[K${def}New version found! (${r_version})${res}";
+
+			echo "Downloading script..";
+			local tmpf=$(mktemp);
+			curl -s "${urlbase}pathzuzu.sh" > $tmpf;
+
+			echo -n "Checking checksum..";
+			local md5l=$(md5sum $tmpf | cut -d ' ' -f 1);
+			local md5r=$(curl -s "${urlbase}pathzuzu.sh.md5" | cut -d ' ' -f 1);
+
+			if [ "$md5l" != "$md5r" ];
+			then
+				echo -e "\r\033[K${und}Checksum error! ($md5l != $md5r)${res}";
+				rm $tmpf;
+				exit 3;
+			fi;
+
+			echo -e "\r\033[KChecksum ${def}\"${md5r}\"${res}: ${def}OK!${res}";
+
+			local tmpbk=$(mktemp);
+			mv "$0" "$tmpbk";
+			echo "Old version (${und}${l_version}${res}): ${und}${0}${res} => ${def}${tmpbk}${res}";
+
+			mv "$tmpf" "$0";
+			chmod +x "$0";
+			echo "New version (${def}$r_version${res}): ${und}${tmpf}${res} => ${def}${0}${res}";
+
+			echo "Starting old copy removal..";
+			(sleep 5; rm "${tmpbk}")&
+
+			echo "Done.";
+		else
+			echo -e "\r\033[KNo new updates. (Last: ${def}${r_version}${res})";
+			exit 1;
+		fi;
+	else
+		echo -e "\r\033[K${und}Error received while retrieving updates!${res}";
+		exit 2;
+	fi;
+}
+
 err=0;
 OPTIND=1;
-while getopts 'e:g:r:t:u:' opt;
+while getopts 'ce:g:r:t:u:' opt;
 do
 	case "$opt" in
+		c)	#check for updates
+			if [ -w "$0" ];
+			then
+				check_update;
+				exit 0;
+			else
+				echo "{und}'$0' can't be overwritten by the current user!${res}";
+				exit 4;
+			fi;
+			;;
 		e)	#execute command
 			exe="$OPTARG";
 			;;
@@ -85,6 +146,7 @@ log="$(basename "$0").log"
 if [ "$tor" = "" ];
 then
 	echo "Usage: $(basename "$0") [-e command] [-r address:port] [-t seconds] command [args]";
+	echo -e "\t-c\t\t\e${und}C${res}heck for updates (github)";
 	echo -e "\t-e command\t\e${und}E${res}xecute command if target is vulnerable";
 	echo -e "\t-r address:port\tStarts ${und}r${res}everse shell to address:port";
 	echo -e "\t-t seconds\t${und}T${res}imeout. Kills target after \$seconds seconds";
@@ -206,9 +268,9 @@ then
 	PATH="$tmpd" "$tor" $@;
 else
 	function timeout(){	#yeah it's a trick. but it works. kind of.
-		local maxt=$1;
-		local command="$2";
-		local arg="$3";
+		maxt=$1;
+		command="$2";
+		arg="$3";
 		bash -c "PID=\$\$;((trap '' PIPE;sleep $maxt; kill -s PIPE \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null; sleep 5; kill -s KILL \$(ps --ppid \$PID | grep -avP \"\skill\$\" | grep -oP \"^\s*\K\d+\") &>/dev/null )& ) | (PATH='$tmpd' '$command' $arg )";
 	}
 	timeout $timeout "$tor" "$@";
