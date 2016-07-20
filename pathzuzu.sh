@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.3----+------+
+#+-v1.6.4----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
 #|https://keybase.io/ShotokanZH|
 #+-$BEGIN----------------------+
 
-export l_version="1.6.3";
+export l_version="1.6.4";
 
 #color definition
 export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
@@ -146,8 +146,8 @@ log="$(basename "$0").log"
 if [ "$tor" = "" ];
 then
 	echo "Usage: $(basename "$0") [-e command] [-r address:port] [-t seconds] command [args]";
-	echo -e "\t-c\t\t\e${und}C${res}heck for updates (github)";
-	echo -e "\t-e command\t\e${und}E${res}xecute command if target is vulnerable";
+	echo -e "\t-c\t\t${und}C${res}heck for updates (github)";
+	echo -e "\t-e command\t${und}E${res}xecute command if target is vulnerable";
 	echo -e "\t-r address:port\tStarts ${und}r${res}everse shell to address:port";
 	echo -e "\t-t seconds\t${und}T${res}imeout. Kills target after \$seconds seconds";
 	echo "";
