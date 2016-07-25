@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.4----+------+
+#+-v1.6.5----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
 #|https://keybase.io/ShotokanZH|
 #+-$BEGIN----------------------+
 
-export l_version="1.6.4";
+export l_version="1.6.5";
 
 #color definition
 export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
@@ -243,7 +243,7 @@ echo "Running: ${def}$tor $@${res}";
 echo "";
 
 function printline(){
-	local maxl=$(tput cols);
+	local maxl=$(stty size | cut -d ' ' -f 2);
 	maxl=$(( maxl - 8 ));
 	local med=$(( maxl / 2 ));
 	local x=0;
