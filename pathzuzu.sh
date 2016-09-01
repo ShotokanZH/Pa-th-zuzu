@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.5----+------+
+#+-v1.6.6----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
 #|https://keybase.io/ShotokanZH|
 #+-$BEGIN----------------------+
 
-export l_version="1.6.5";
+export l_version="1.6.6";
 
 #color definition
 export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
 export und=$(echo -en "\e[1;4;31m");	#used for important things, bold, underlined, red
-export res=$(echo -en "\e[0m");	#reset
+export res=$(echo -en "\e[0m");		#reset
 
 echo -en "${res}${def}";
 cat << EOF
@@ -92,7 +92,7 @@ do
 				check_update;
 				exit 0;
 			else
-				echo "{und}'$0' can't be overwritten by the current user!${res}";
+				echo "${und}'$0' can't be overwritten by the current user!${res}";
 				exit 4;
 			fi;
 			;;
@@ -142,6 +142,13 @@ shift "$((OPTIND-1))";
 
 tor="$(which "$1")";
 log="$(basename "$0").log"
+startd="$PWD";
+
+if [ ! -w "$log" ];
+then
+	startd="";
+	log="$(mktemp)";
+fi;
 
 if [ "$tor" = "" ];
 then
@@ -171,7 +178,6 @@ then
 	tor="$PWD/$tor";
 fi;
 
-startd="$PWD";
 ex_ugid="";
 
 if [ "$t_uid" != "" ];
