@@ -8,7 +8,7 @@ Checks for PATH substitution vulnerabilities, logs the commands executed by the 
 ```
  __      /___    \ ___    ___
 |__) /\ (  | |__| ) _//  \ _//  \|
-|   /--\ \ | |  |/ /__\__//__\__/. v1.6.6
+|   /--\ \ | |  |/ /__\__//__\__/. v1.6.7
 
 Usage: pathzuzu [-e command] [-r address:port] [-t seconds] command [args]
         -c              Check for updates (github)
