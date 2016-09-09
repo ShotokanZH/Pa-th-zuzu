@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.6----+------+
+#+-v1.6.7----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
 #|https://keybase.io/ShotokanZH|
 #+-$BEGIN----------------------+
 
-export l_version="1.6.6";
+export l_version="1.6.7";
 
 #color definition
 export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
@@ -64,7 +64,7 @@ function check_update(){
 			echo "Old version (${und}${l_version}${res}): ${und}${0}${res} => ${def}${tmpbk}${res}";
 
 			mv "$tmpf" "$0";
-			chmod +x "$0";
+			chmod 755 "$0";
 			echo "New version (${def}$r_version${res}): ${und}${tmpf}${res} => ${def}${0}${res}";
 
 			echo "Starting old copy removal..";
@@ -191,6 +191,7 @@ then
 fi;
 
 tmpd=$(mktemp -d);
+chmod 755 "$tmpd";
 tmpf=$(mktemp);
 
 echo "#!$(which bash)" > $tmpf;
@@ -215,7 +216,7 @@ then
 fi;
 echo "\$(basename \"\$0\") \$@" >> $tmpf;
 
-chmod +x "$tmpf";
+chmod 755 "$tmpf";
 
 OIFS=$IFS;
 IFS=':';
