@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 #+-----------+
 #|PA(TH)ZUZU!|
-#+-v1.6.8----+------+
+#+-v1.6.9----+------+
 #|Brought to you by:|
 #| Shotokan@aitch.me|
 #+-PGP-AHEAD--------+----------+
 #|https://keybase.io/ShotokanZH|
 #+-$BEGIN----------------------+
 
-export l_version="1.6.8";
+export l_version="1.6.9";
 
 #color definition
-export def=$(echo -en "\e[1;32m");	#used for definitions, bold green
+export def=$(echo -en "\e[1;32m");		#used for definitions, bold green
 export und=$(echo -en "\e[1;4;31m");	#used for important things, bold, underlined, red
-export res=$(echo -en "\e[0m");		#reset
+export res=$(echo -en "\e[0m");			#reset
 
 echo -en "${res}${def}";
 cat << EOF
@@ -198,7 +198,7 @@ tmpf=$(mktemp);
 
 echo "#!$(which bash)" > $tmpf;
 echo "PATH=\"${PATH}\"" >> $tmpf;
-echo "echo \"\$(whoami)#\$(id -u):$(id -g) RUN: \$(basename \"\$0\") \$@\" >> $startd/$log" >> $tmpf;
+echo "echo \"\$(whoami)#\$(id -u):\$(id -g) RUN: \$(basename \"\$0\") \$@\" >> $startd/$log" >> $tmpf;
 
 if [ "$ip" != "" ] && [ "$port" != "" ];
 then
